@@ -4,7 +4,6 @@ number: 4
 title: "IA al Cicle de Vida del Software"
 duration: "2h"
 audience: "Tots els perfils"
-dateOptions: ["11 de maig 2026", "12 de maig 2026"]
 summary: "Integració d'IA en fases de disseny, desenvolupament, testing i deployment."
 objective: "Integrar pràctiques d'IA a cada fase del cicle de vida del software (design, development, QA, deployment) per accelerar delivery i millorar qualitat."
 order: 4

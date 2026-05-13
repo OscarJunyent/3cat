@@ -8,7 +8,6 @@ const blocsCollection = defineCollection({
     title: z.string(),
     duration: z.string(),
     audience: z.string(),
-    dateOptions: z.array(z.string()),
     summary: z.string(),
     objective: z.string(),
     order: z.number(),

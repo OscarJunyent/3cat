@@ -6,8 +6,9 @@ export default {
       colors: {
         'elink': '#D63B3B',     // Color primari Elink - vermell corall
         '3cat': '#DC0000',      // Color secundari 3Cat - vermell més intens
-        'text-primary': '#1a1a1a', // Text principal - negre suau
-        'bg-light': '#f9f9f9',  // Fons clar
+        'text-primary': '#1a1a1a',
+        'text-secondary': '#666666',
+        'bg-light': '#f9f9f9',
       },
       fontFamily: {
         'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],

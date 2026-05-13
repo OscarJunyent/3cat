@@ -34,9 +34,11 @@ jobs:
         env:
           PUBLIC_FORMSPREE_ID: ${{ secrets.PUBLIC_FORMSPREE_ID }}
 
+      - name: 🔑 Configura SSH
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: 📂 Upload build al servidor via rsync
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
           rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -p 65002" dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u391072230/domains/elink.cat/public_html/3cat/

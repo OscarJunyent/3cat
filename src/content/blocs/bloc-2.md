@@ -4,7 +4,6 @@ number: 2
 title: "Especialització d'Agents i Skills"
 duration: "3h"
 audience: "Tots els perfils"
-dateOptions: ["6 de maig 2026", "7 de maig 2026"]
 summary: "Configuració avançada d'agents personalitzats, creació de skills customitzats i orquestració."
 objective: "Dominar la creació d'agents personalitzats, definir skills reutilitzables i orquestrar comportaments complexos d'IA per a casos d'ús específics d'equip."
 order: 2

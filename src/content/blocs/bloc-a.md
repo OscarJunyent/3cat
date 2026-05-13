@@ -4,7 +4,6 @@ number: "A"
 title: "Creació d'Interfícies amb IA"
 duration: "3h"
 audience: "Product Owners, UX/UI"
-dateOptions: ["13 de maig 2026", "14 de maig 2026"]
 summary: "Disseny de UX mejorat amb IA: prototipat ràpid, personalització i accessibilitat."
 objective: "Aprofitar IA per a accelerar el disseny d'interfícies, crear prototips en hores en lloc de dies, personalitzar experiències i garantir accessibilitat."
 order: 5

@@ -1,6 +1,10 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BlockCard from '../components/BlockCard.astro';
+
+const allBlocs = await getCollection('blocs');
+const blocsOrdered = allBlocs.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout title="Blocs - 3Cat × Elink">
@@ -11,65 +15,20 @@ import BlockCard from '../components/BlockCard.astro';
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <BlockCard
-        id="bloc-0"
-        number={1}
-        title="Introducció a l'IA"
-        duration="1.5h"
-        audience="Tots els perfils"
-        summary="Conceptes fonamentals, història de l'IA i aplicacions del sector."
-        href="/exemple-bloc"
-      />
-
-      <BlockCard
-        id="bloc-1"
-        number={2}
-        title="Machine Learning"
-        duration="2.5h"
-        audience="Desenvolupadors, Product Owners"
-        summary="Algoritmes de supervised i unsupervised learning, entrenament de models."
-        href="/exemple-bloc"
-      />
-
-      <BlockCard
-        id="bloc-2"
-        number={3}
-        title="Deep Learning"
-        duration="3h"
-        audience="Desenvolupadors, Enginyers de dades"
-        summary="Xarxes neuronals, CNN, RNN i arquitectures modernes."
-        href="/exemple-bloc"
-      />
-
-      <BlockCard
-        id="bloc-3"
-        number={4}
-        title="NLP i Llenguatge"
-        duration="2h"
-        audience="Tots els perfils"
-        summary="Processament de llenguatge natural, embeddings i transformers."
-        href="/exemple-bloc"
-      />
-
-      <BlockCard
-        id="bloc-4"
-        number={5}
-        title="Visió per Computadora"
-        duration="2.5h"
-        audience="Desenvolupadors, UX/UI"
-        summary="Reconeixement d'imatges, detecció d'objectes i segmentació."
-        href="/exemple-bloc"
-      />
-
-      <BlockCard
-        id="bloc-5"
-        number={6}
-        title="Ètica i Governance en IA"
-        duration="1.5h"
-        audience="Tots els perfils"
-        summary="Biaix en algoritmes, privacitat, regulació i millors pràctiques."
-        href="/exemple-bloc"
-      />
+      {blocsOrdered.map((entry) => {
+        const { blockId, number, title, duration, audience, summary } = entry.data;
+        return (
+          <BlockCard
+            id={blockId}
+            number={number}
+            title={title}
+            duration={duration}
+            audience={audience}
+            summary={summary}
+            href={`/${blockId}`}
+          />
+        );
+      })}
     </div>
 
     <div class="mt-16 p-8 bg-elink/5 border border-elink/20 rounded-lg text-center">

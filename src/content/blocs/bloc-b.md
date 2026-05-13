@@ -4,7 +4,6 @@ number: "B"
 title: "Design System com a Skills d'IA"
 duration: "3h"
 audience: "UX/UI, Desenvolupadors"
-dateOptions: ["15 de maig 2026", "16 de maig 2026"]
 summary: "Documentació executiva de Design Systems com a skills reutilitzables en IA."
 objective: "Transformar un Design System en un asset reutilitzable per agents d'IA, creant skills que generin codi consistent amb la marca."
 order: 6

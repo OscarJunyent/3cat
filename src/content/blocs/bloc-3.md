@@ -4,7 +4,6 @@ number: 3
 title: "MCP i Protocols de Connexió IA"
 duration: "2h"
 audience: "Tots els perfils"
-dateOptions: ["8 de maig 2026", "9 de maig 2026"]
 summary: "Model Context Protocol: arquitectura, integrations i casos d'ús per a sistemes distribuïts."
 objective: "Entendre el Model Context Protocol (MCP), integrar connexions amb sistemes externs i construir pipelines d'IA distribuïts i escalables."
 order: 3

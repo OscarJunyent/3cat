@@ -4,7 +4,6 @@ number: 1
 title: "Fonaments GitHub Copilot Enterprise"
 duration: "2h"
 audience: "Tots els perfils"
-dateOptions: ["4 de maig 2026", "5 de maig 2026"]
 summary: "Introducció a GitHub Copilot, setup inicial, cases d'ús i millors pràctiques per a equipos."
 objective: "Entendre les capacitats de GitHub Copilot Enterprise, configuració en IDEs, integració amb workflows de desenvolupament i millors pràctiques de seguretat i privacitat."
 order: 1

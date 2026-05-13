@@ -31,8 +31,6 @@ html {
 
 body {
   @apply bg-white text-text-primary;
-  color: var(--color-text-primary);
-  background-color: var(--color-bg);
 }
 
 h1 {
@@ -61,7 +59,6 @@ small {
 
 a {
   @apply text-elink hover:underline transition-colors;
-  color: var(--color-elink);
 }
 
 a:hover {

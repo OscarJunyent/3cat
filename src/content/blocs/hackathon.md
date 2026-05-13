@@ -4,7 +4,6 @@ number: "Hackathon"
 title: "Hackathon: Primera Sprint Real"
 duration: "4h"
 audience: "Tots els perfils"
-dateOptions: ["18 de maig 2026", "19 de maig 2026"]
 summary: "Aplicació pràctica integrada de tots els conceptes en un projecte real d'equip."
 objective: "Aplicar tots els conceptes apresos (Copilot, Agents, MCP, SDLC, UX amb IA) en un projecte real en equip, demonstrant ROI mesurable."
 order: 7
