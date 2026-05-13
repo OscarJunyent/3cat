@@ -1,0 +1,51 @@
+---
+interface Props {
+  code: string;
+  language?: string;
+  label?: string;
+}
+
+const { code, language = 'bash', label } = Astro.props;
+---
+
+<div class="my-8">
+  {label && (
+    <div class="text-sm font-medium text-text-secondary mb-2 px-4 pt-4">
+      {label}
+    </div>
+  )}
+  <div class="relative bg-gray-900 text-gray-100 rounded-lg overflow-hidden font-mono text-sm">
+    <button 
+      class="copy-btn absolute top-3 right-3 bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-xs font-medium transition-colors"
+      data-code={code}
+      title="Copiar al portapapeles"
+    >
+      Copiar
+    </button>
+    <pre class="p-4 pr-24 overflow-x-auto"><code class={`language-${language}`}>{code}</code></pre>
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.copy-btn');
+  buttons.forEach(button => {
+    button.addEventListener('click', async (e) => {
+      const code = (e.target as HTMLElement).getAttribute('data-code');
+      if (!code) return;
+      
+      try {
+        await navigator.clipboard.writeText(code);
+        const original = (e.target as HTMLElement).textContent;
+        (e.target as HTMLElement).textContent = 'Copiat!';
+        (e.target as HTMLElement).classList.add('bg-green-600');
+        
+        setTimeout(() => {
+          (e.target as HTMLElement).textContent = original;
+          (e.target as HTMLElement).classList.remove('bg-green-600');
+        }, 2000);
+      } catch (err) {
+        console.error('Error al copiar:', err);
+      }
+    });
+  });
+</script>

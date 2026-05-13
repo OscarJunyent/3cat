@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://3cat.elink.cat/sitemap-index.xml
+
+# Denegar accés a recursos sensibles
+User-agent: *
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.env.*

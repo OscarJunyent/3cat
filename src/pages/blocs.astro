@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockCard from '../components/BlockCard.astro';
+---
+
+<BaseLayout title="Blocs - 3Cat × Elink">
+  <section class="section-padding container-max">
+    <h1 class="mb-4">Blocs de Contingut</h1>
+    <p class="text-lg text-text-secondary mb-12">
+      Explora els blocs temàtics de la formació en Intelligència Artificial.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <BlockCard
+        id="bloc-0"
+        number={1}
+        title="Introducció a l'IA"
+        duration="1.5h"
+        audience="Tots els perfils"
+        summary="Conceptes fonamentals, història de l'IA i aplicacions del sector."
+        href="/exemple-bloc"
+      />
+
+      <BlockCard
+        id="bloc-1"
+        number={2}
+        title="Machine Learning"
+        duration="2.5h"
+        audience="Desenvolupadors, Product Owners"
+        summary="Algoritmes de supervised i unsupervised learning, entrenament de models."
+        href="/exemple-bloc"
+      />
+
+      <BlockCard
+        id="bloc-2"
+        number={3}
+        title="Deep Learning"
+        duration="3h"
+        audience="Desenvolupadors, Enginyers de dades"
+        summary="Xarxes neuronals, CNN, RNN i arquitectures modernes."
+        href="/exemple-bloc"
+      />
+
+      <BlockCard
+        id="bloc-3"
+        number={4}
+        title="NLP i Llenguatge"
+        duration="2h"
+        audience="Tots els perfils"
+        summary="Processament de llenguatge natural, embeddings i transformers."
+        href="/exemple-bloc"
+      />
+
+      <BlockCard
+        id="bloc-4"
+        number={5}
+        title="Visió per Computadora"
+        duration="2.5h"
+        audience="Desenvolupadors, UX/UI"
+        summary="Reconeixement d'imatges, detecció d'objectes i segmentació."
+        href="/exemple-bloc"
+      />
+
+      <BlockCard
+        id="bloc-5"
+        number={6}
+        title="Ètica i Governance en IA"
+        duration="1.5h"
+        audience="Tots els perfils"
+        summary="Biaix en algoritmes, privacitat, regulació i millors pràctiques."
+        href="/exemple-bloc"
+      />
+    </div>
+
+    <div class="mt-16 p-8 bg-elink/5 border border-elink/20 rounded-lg text-center">
+      <h3 class="text-h4 mb-3">Vols aprofundir?</h3>
+      <p class="text-text-secondary mb-4">
+        Cada bloc inclou exercicis pràctics, presentacions en PDF i recursos addicionals.
+      </p>
+      <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="btn-primary">
+        Contacta amb Elink.cat
+      </a>
+    </div>
+  </section>
+</BaseLayout>

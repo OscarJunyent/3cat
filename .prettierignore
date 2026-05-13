@@ -1,0 +1,4 @@
+# Configuració de Prettier
+node_modules
+dist
+.astro

@@ -1,0 +1,4 @@
+{
+  "extends": "astro/configs/strict",
+  "rules": {}
+}

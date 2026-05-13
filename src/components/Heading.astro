@@ -1,0 +1,13 @@
+---
+interface Props {
+  title: string;
+  level?: 1 | 2 | 3 | 4;
+}
+
+const { title, level = 1 } = Astro.props;
+const HeadingTag = `h${level}` as const;
+---
+
+<HeadingTag class={`text-h${level} font-${level === 1 ? 'bold' : 'semibold'}`}>
+  {title}
+</HeadingTag>

@@ -1,0 +1,132 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = '3Cat x Elink - Portal de Formació en IA', description = 'Portal de materials de formació en Intelligència Artificial' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ca">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body class="bg-white text-text-primary">
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+      <nav class="container-max py-4 flex items-center justify-between">
+        <!-- Logo Elink -->
+        <div class="flex items-center gap-3">
+          <a href="/" class="text-2xl font-bold text-elink hover:no-underline">
+            3CAT × ELINK
+          </a>
+        </div>
+
+        <!-- Navigation -->
+        <ul class="hidden md:flex items-center gap-8">
+          <li>
+            <a href="/" class="text-text-primary hover:text-elink transition-colors no-underline">
+              Inici
+            </a>
+          </li>
+          <li>
+            <a href="/blocs" class="text-text-primary hover:text-elink transition-colors no-underline">
+              Blocs
+            </a>
+          </li>
+          <li>
+            <a href="/feedback" class="text-text-primary hover:text-elink transition-colors no-underline">
+              Feedback
+            </a>
+          </li>
+          <li>
+            <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="no-underline">
+              <button class="btn-primary text-sm">
+                Visita Elink.cat
+              </button>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="md:hidden text-2xl text-elink">
+          ☰
+        </button>
+      </nav>
+    </header>
+
+    <main class="min-h-screen">
+      <slot />
+    </main>
+
+    <footer class="bg-gray-900 text-white mt-20">
+      <div class="container-max py-16">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
+          <!-- About -->
+          <div>
+            <h3 class="text-h4 mb-4 text-elink">Sobre aquest projecte</h3>
+            <p class="text-small text-gray-400">
+              Portal de materials de formació en Intelligència Artificial impartida per Elink.cat a l'àrea d'Enginyeria de 3Cat (CCMA).
+            </p>
+          </div>
+
+          <!-- Links -->
+          <div>
+            <h3 class="text-h4 mb-4 text-elink">Enllaços</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-elink transition-colors">
+                  Elink.cat
+                </a>
+              </li>
+              <li>
+                <a href="https://www.ccma.cat" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-elink transition-colors">
+                  3Cat (CCMA)
+                </a>
+              </li>
+              <li>
+                <a href="/podcasts" class="text-gray-400 hover:text-elink transition-colors">
+                  Pòdcasts
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Resources -->
+          <div>
+            <h3 class="text-h4 mb-4 text-elink">Recursos</h3>
+            <ul class="space-y-3">
+              <li>
+                <a href="/blocs" class="text-gray-400 hover:text-elink transition-colors">
+                  Blocs de contingut
+                </a>
+              </li>
+              <li>
+                <a href="/feedback" class="text-gray-400 hover:text-elink transition-colors">
+                  Envia feedback
+                </a>
+              </li>
+              <li>
+                <a href="/articles" class="text-gray-400 hover:text-elink transition-colors">
+                  Articles
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="border-t border-gray-700 pt-8 text-center text-small text-gray-400">
+          <p>© 2026 Elink.cat × 3Cat (CCMA). Tots els drets reservats.</p>
+          <p class="mt-2">Formació en Intelligència Artificial</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

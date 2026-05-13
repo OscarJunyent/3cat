@@ -1,0 +1,88 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '../styles/global.css';
+
+interface Block {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  blockId: string;
+  duration: string;
+  audience: string;
+  date?: string;
+  prevBlock?: Block;
+  nextBlock?: Block;
+}
+
+const { title, blockId, duration, audience, date, prevBlock, nextBlock } = Astro.props;
+---
+
+<BaseLayout title={`${title} - 3Cat × Elink`}>
+  <article>
+    {/* Hero section */}
+    <section class="bg-gradient-to-r from-elink/10 to-transparent py-12 border-b border-gray-200">
+      <div class="container-max">
+        <div class="mb-4 text-sm text-text-secondary">
+          <a href="/blocs" class="text-elink hover:underline">Blocs</a>
+          <span class="mx-2">/</span>
+          <span>{blockId}</span>
+        </div>
+        <h1 class="text-h1 mb-6 text-elink">{title}</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <p class="text-small text-text-secondary font-medium">DURADA</p>
+            <p class="text-lg font-semibold mt-1">{duration}</p>
+          </div>
+          <div>
+            <p class="text-small text-text-secondary font-medium">AUDIÈNCIA</p>
+            <p class="text-lg font-semibold mt-1">{audience}</p>
+          </div>
+          {date && (
+            <div>
+              <p class="text-small text-text-secondary font-medium">DATA</p>
+              <p class="text-lg font-semibold mt-1">{date}</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+
+    {/* Main content */}
+    <section class="section-padding container-max">
+      <slot />
+    </section>
+
+    {/* Navigation */}
+    <section class="section-padding bg-bg-light border-t border-gray-200">
+      <div class="container-max">
+        <nav class="grid grid-cols-2 gap-8">
+          {prevBlock ? (
+            <a href={`/bloc/${prevBlock.id}`} class="group no-underline">
+              <div class="text-sm text-text-secondary font-medium mb-2">← BLOC ANTERIOR</div>
+              <div class="text-lg font-semibold text-text-primary group-hover:text-elink transition-colors">
+                {prevBlock.title}
+              </div>
+            </a>
+          ) : (
+            <div></div>
+          )}
+          
+          {nextBlock ? (
+            <a href={`/bloc/${nextBlock.id}`} class="group no-underline text-right">
+              <div class="text-sm text-text-secondary font-medium mb-2">BLOC SEGÜENT →</div>
+              <div class="text-lg font-semibold text-text-primary group-hover:text-elink transition-colors">
+                {nextBlock.title}
+              </div>
+            </a>
+          ) : (
+            <div></div>
+          )}
+        </nav>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

@@ -1,0 +1,38 @@
+---
+interface Props {
+  id: string;
+  number: number;
+  title: string;
+  duration: string;
+  audience: string;
+  summary: string;
+  href: string;
+}
+
+const { id, number, title, duration, audience, summary, href } = Astro.props;
+---
+
+<a href={href} class="group no-underline block">
+  <div class="h-full p-8 border border-gray-200 rounded-lg hover:border-elink hover:shadow-md transition-all bg-white hover:bg-elink/5">
+    <div class="flex items-start justify-between mb-4">
+      <div class="w-12 h-12 bg-elink text-white rounded-lg flex items-center justify-center font-bold text-lg">
+        {number}
+      </div>
+      <span class="text-xs font-medium text-text-secondary bg-gray-100 px-2 py-1 rounded">
+        {duration}
+      </span>
+    </div>
+    
+    <h3 class="text-h4 mb-3 text-text-primary group-hover:text-elink transition-colors">
+      {title}
+    </h3>
+    
+    <p class="text-small text-text-secondary mb-4">
+      {summary}
+    </p>
+    
+    <div class="text-xs text-text-secondary font-medium pt-4 border-t border-gray-100">
+      <span class="inline-block mr-4">👥 {audience}</span>
+    </div>
+  </div>
+</a>

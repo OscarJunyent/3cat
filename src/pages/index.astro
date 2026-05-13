@@ -1,0 +1,159 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BlockCard from '../components/BlockCard.astro';
+
+// Obtenir tots els blocs de la collection
+const allBlocs = await getCollection('blocs');
+
+// Ordenar per el camp 'order'
+const blocsOrdered = allBlocs.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="3Cat × Elink - Portal de Formació en IA">
+  {/* HERO SECTION */}
+  <section class="bg-gradient-to-b from-elink/5 to-white py-20">
+    <div class="container-max">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-12">
+        <div>
+          <h1 class="text-h1 mb-6 text-elink">
+            Formació en Intel·ligència Artificial
+          </h1>
+          <p class="text-lg text-text-primary mb-4 leading-relaxed">
+            Programa d'adopció d'IA per a l'àrea d'Enginyeria i Desenvolupament de 3Cat
+          </p>
+          <p class="text-small text-text-secondary font-medium mb-8">
+            Abril – Juny 2026 · Elink.cat
+          </p>
+          <div class="flex gap-6">
+            <a href="/blocs" class="btn-primary">
+              Explora els Blocs
+            </a>
+            <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              Visita Elink.cat
+            </a>
+          </div>
+        </div>
+        <div class="flex justify-center gap-8 items-center">
+          <img 
+            src="/images/logo-elink.svg" 
+            alt="Logo Elink.cat" 
+            class="h-20 object-contain"
+          />
+          <div class="text-3xl text-gray-300">×</div>
+          <img 
+            src="/images/logo-3cat.svg" 
+            alt="Logo 3Cat" 
+            class="h-20 object-contain"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* INTRO BREU */}
+  <section class="section-padding bg-white border-b border-gray-200">
+    <div class="container-max">
+      <p class="text-lg text-text-secondary leading-relaxed max-w-3xl mx-auto">
+        Aquest portal recull tots els materials, exercicis pràctics i artefactes generats al llarg del programa de formació en Intelligència Artificial. Trobaràs contingut estructurat en blocs temàtics, des dels fonaments de GitHub Copilot Enterprise fins a estratègies avançades d'integració d'IA al cicle de vida del desenvolupament de software.
+      </p>
+    </div>
+  </section>
+
+  {/* GRAELLA DE BLOCS */}
+  <section class="section-padding container-max">
+    <h2 class="text-center mb-4 text-text-primary">Blocs de Formació</h2>
+    <p class="text-center text-text-secondary mb-12">
+      Programa complet de 7 mòduls + hackathon final
+    </p>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {blocsOrdered.map((entry) => {
+        const { blockId, number, title, duration, audience, summary } = entry.data;
+        return (
+          <BlockCard
+            id={blockId}
+            number={number}
+            title={title}
+            duration={duration}
+            audience={audience}
+            summary={summary}
+            href={`/${blockId}`}
+          />
+        );
+      })}
+    </div>
+  </section>
+
+  {/* SECCIÓ SOBRE ELINK.CAT */}
+  <section class="section-padding bg-gradient-to-r from-elink/5 to-transparent border-b border-gray-200">
+    <div class="container-max">
+      <h2 class="mb-6 text-text-primary">Sobre Elink.cat</h2>
+      <div class="max-w-3xl">
+        <p class="text-lg text-text-secondary leading-relaxed mb-4">
+          Elink.cat és una consultoria tecnològica especialitzada en transformació digital i adopció d'Intelligència Artificial. Durant més d'una dècada, hem acompanyat centenars d'equips tècnics en la modernització dels seus processos i la integració d'IA als seus workflows.
+        </p>
+        <p class="text-lg text-text-secondary leading-relaxed mb-6">
+          La nostra metodologia es basa en codi real i artefactes operatius: no només expliquem teoria, sinó que construïm junts solucions que funcionan.
+        </p>
+        <a 
+          href="https://elink.cat" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          class="btn-primary"
+        >
+          Visita elink.cat
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA PÍNDOLA + PODCAST */}
+  <section class="section-padding container-max">
+    <h2 class="text-center mb-12 text-text-primary">Manté't Actualitzat</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Píndola */}
+      <a 
+        href="https://elink.cat/pindola"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group no-underline"
+      >
+        <div class="h-full p-8 bg-gradient-to-br from-elink/10 to-white border border-elink/30 rounded-lg hover:border-elink hover:shadow-md transition-all">
+          <div class="text-4xl mb-4">📧</div>
+          <h3 class="text-h4 text-text-primary group-hover:text-elink transition-colors mb-3">
+            La Píndola d'Elink
+          </h3>
+          <p class="text-text-secondary mb-6">
+            Newsletter quinzenal amb anàlisis, trends i casos d'ús reals sobre IA, desenvolupament i transformació digital.
+          </p>
+          <span class="text-elink font-medium">
+            Subscriu-te →
+          </span>
+        </div>
+      </a>
+
+      {/* Podcast */}
+      <a 
+        href="https://elink.cat/podcast"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="group no-underline"
+      >
+        <div class="h-full p-8 bg-gradient-to-br from-elink/10 to-white border border-elink/30 rounded-lg hover:border-elink hover:shadow-md transition-all">
+          <div class="text-4xl mb-4">🎙️</div>
+          <h3 class="text-h4 text-text-primary group-hover:text-elink transition-colors mb-3">
+            Podcast d'Elink
+          </h3>
+          <p class="text-text-secondary mb-6">
+            Episodis setmanals on debatem les últimes novetats en IA, desenvolvimento de software i estratègia tecnològica.
+          </p>
+          <span class="text-elink font-medium">
+            Escolta els episodis →
+          </span>
+        </div>
+      </a>
+    </div>
+  </section>
+</BaseLayout>

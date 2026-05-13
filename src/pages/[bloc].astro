@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import ModuleLayout from '../layouts/ModuleLayout.astro';
+import PracticeExercise from '../components/PracticeExercise.astro';
+import CommandBlock from '../components/CommandBlock.astro';
+import Screenshot from '../components/Screenshot.astro';
+import ArtifactCard from '../components/ArtifactCard.astro';
+import PdfDownload from '../components/PdfDownload.astro';
+
+export async function getStaticPaths() {
+  const blocs = await getCollection('blocs');
+  
+  return blocs.map((entry) => ({
+    params: { bloc: entry.data.blockId },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: any;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const {
+  title,
+  blockId,
+  duration,
+  audience,
+  date,
+  objective,
+  keyTopics,
+  practiceExercise,
+  commands,
+  screenshots,
+  artifact,
+  pdfFile,
+  prevBlock,
+  nextBlock,
+} = entry.data;
+---
+
+<ModuleLayout
+  title={title}
+  blockId={blockId}
+  duration={duration}
+  audience={audience}
+  date={date}
+  prevBlock={prevBlock}
+  nextBlock={nextBlock}
+>
+  {/* Secció d'objectiu */}
+  <section class="mb-16">
+    <h2>Objectiu del bloc</h2>
+    <p class="text-lg text-text-secondary">{objective}</p>
+  </section>
+
+  {/* Conceptes clau */}
+  <section class="mb-16">
+    <h2>Conceptes clau</h2>
+    <div class="space-y-3">
+      {keyTopics.map((topic: any) => (
+        <div class="flex items-center justify-between p-4 bg-bg-light rounded-lg border border-gray-200">
+          <span class="font-medium text-text-primary">{topic.name}</span>
+          <span class="text-small text-text-secondary bg-white px-3 py-1 rounded">
+            {topic.duration}
+          </span>
+        </div>
+      ))}
+    </div>
+    <div class="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg text-small text-text-secondary">
+      <strong>Temps total:</strong> {duration}
+    </div>
+  </section>
+
+  {/* Contingut markdown */}
+  <section class="mb-16 prose prose-invert max-w-none">
+    <Content />
+  </section>
+
+  {/* Exercici pràctic */}
+  <section class="mb-16">
+    <PracticeExercise title={practiceExercise.title}>
+      <p>{practiceExercise.description}</p>
+
+      {commands && commands.length > 0 && (
+        <div class="mt-8">
+          <h4 class="font-bold text-lg mb-6">Comandos i exemples</h4>
+          {commands.map((cmd: any, idx: number) => (
+            <CommandBlock
+              key={idx}
+              code={cmd.code}
+              language={cmd.language || 'bash'}
+              label={cmd.label}
+            />
+          ))}
+        </div>
+      )}
+    </PracticeExercise>
+  </section>
+
+  {/* Captures */}
+  {screenshots && screenshots.length > 0 && (
+    <section class="mb-16">
+      <h2>Visualitzacions</h2>
+      <div class="space-y-8">
+        {screenshots.map((screenshot: any, idx: number) => (
+          <Screenshot
+            key={idx}
+            src={screenshot.src}
+            alt={screenshot.alt}
+            caption={screenshot.caption}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* Lliurables */}
+  <section class="mb-16">
+    <ArtifactCard
+      title="Artefactes que hauries de tenir"
+      items={artifact}
+    />
+  </section>
+
+  {/* PDF Download */}
+  <section class="mb-16">
+    <h2>Recursos addicionals</h2>
+    <PdfDownload
+      href={`/pdfs/${pdfFile}`}
+      filename={pdfFile}
+    />
+  </section>
+</ModuleLayout>
