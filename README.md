@@ -77,7 +77,7 @@ El portal estarà disponible a `http://localhost:3000`
 ### Build per a producció
 
 ```bash
-pm run build
+npm run build
 ```
 
 Genera els arxius optimitzats a la carpeta `dist/`
@@ -105,6 +105,190 @@ src/content/
 ### Lingua
 
 Tot el contingut és en **CATALÀ**.
+
+## 🚀 Deploy
+
+### Requisits al Servidor
+
+- **Nginx 1.18+** (o Apache 2.4+)
+- **Accés SSH/SFTP** al servidor
+- **Certificat SSL** per a `3cat.elink.cat` (Let's Encrypt recomanat)
+- **rsync** instal·lat al servidor (per al script de deploy)
+
+### Configuració del DNS
+
+Apunta `3cat.elink.cat` al servidor on es farà hosting:
+
+```
+CNAME: 3cat.elink.cat → elink.cat
+  o
+A: 3cat.elink.cat → [IP del servidor]
+```
+
+Pot trigar 24-48h en propagar-se globalment.
+
+### Pas 1: Configurar el Certificat SSL
+
+**Amb Let's Encrypt i certbot (recomanat)**:
+
+```bash
+# Instal·lar certbot (si no està instal·lat)
+sudo apt-get install certbot python3-certbot-nginx  # Nginx
+# o
+sudo apt-get install certbot python3-certbot-apache  # Apache
+
+# Generar certificat
+sudo certbot certonly --standalone -d 3cat.elink.cat
+
+# El certificat es guardarà a: /etc/letsencrypt/live/3cat.elink.cat/
+```
+
+### Pas 2: Configurar Nginx o Apache
+
+#### Nginx
+
+```bash
+# Copiar la configuració
+sudo cp deploy/nginx-3cat-elink-cat.conf /etc/nginx/sites-available/3cat.elink.cat
+
+# Crear symlink a sites-enabled
+sudo ln -s /etc/nginx/sites-available/3cat.elink.cat /etc/nginx/sites-enabled/
+
+# Verificar configuració
+sudo nginx -t
+
+# Recarregar Nginx
+sudo systemctl reload nginx
+```
+
+#### Apache
+
+```bash
+# Copiar la configuració
+sudo cp deploy/apache-3cat-elink-cat.conf /etc/apache2/sites-available/
+
+# Habilitar el site
+sudo a2ensite 3cat.elink.cat
+
+# Habilitar mòduls necessaris
+sudo a2enmod rewrite headers ssl
+
+# Verificar configuració
+sudo apache2ctl configtest
+
+# Recarregar Apache
+sudo systemctl reload apache2
+```
+
+### Pas 3: Crear Estructura de Directoris al Servidor
+
+```bash
+# Al servidor, com a root o amb sudo
+mkdir -p /var/www/3cat.elink.cat/dist
+chown deploy:deploy /var/www/3cat.elink.cat  # Canviar al usuari de deploy
+chmod 755 /var/www/3cat.elink.cat
+```
+
+### Pas 4: Configurar Variables d'Entorn
+
+Crear/editar `.env` localment:
+
+```
+PUBLIC_FORMSPREE_ID=abc123def456
+```
+
+Substituir `abc123def456` amb l'ID real del formulari de Formspree.
+
+### Pas 5: Configurar el Script de Deploy
+
+Editar `deploy/deploy.sh`:
+
+```bash
+SERVER="elink.cat"           # Servidor destinació
+USER="deploy"                # Usuari SSH
+REMOTE_PATH="/var/www/3cat.elink.cat"  # Ruta al servidor
+```
+
+### Pas 6: Executar el Deploy
+
+```bash
+# Des de la carpeta del projecte
+./deploy/deploy.sh
+```
+
+El script farà:
+1. `npm run build`
+2. Verificar que `dist/` existeix
+3. Pujar amb `rsync -avz --delete`
+
+### Pas 7: Verificar el Deploy
+
+**Checklist post-deploy**:
+
+- [ ] Accedir a https://3cat.elink.cat i verificar que carrega
+- [ ] Verificar que el certificat SSL és vàlid (sense avisos)
+- [ ] Descarregar un PDF des de `/pdfs/` per comprovar que funciona
+- [ ] Omplir i enviar el formulari de feedback
+- [ ] Navegar per alguns blocs i verificar que els links funcionen
+- [ ] Verificar que les imatges es carreguen correctament
+- [ ] Comprovar que `robots.txt` és accessible: https://3cat.elink.cat/robots.txt
+- [ ] Comprovar que el sitemap es va generar: https://3cat.elink.cat/sitemap-index.xml
+
+### Troubleshooting
+
+**503 Service Unavailable**:
+- Verificar que Nginx/Apache està en execució: `systemctl status nginx` o `systemctl status apache2`
+- Verificar logs: `/var/log/nginx/` o `/var/log/apache2/`
+
+**Certificat SSL no vàlid**:
+- Renovar amb certbot: `sudo certbot renew --force-renewal`
+- Verificar data d'expiracio: `sudo openssl x509 -in /etc/letsencrypt/live/3cat.elink.cat/fullchain.pem -noout -dates`
+
+**Links interns retornen 404**:
+- Verificar que `try_files` (Nginx) o `RewriteRule` (Apache) estan configurats correctament
+- Astro ha de generar rutes sense extensió (ex: `/bloc-1` no `/bloc-1.html`)
+
+**Formspree no envia emails**:
+- Verificar `PUBLIC_FORMSPREE_ID` al `.env`
+- Comprovar logs de Formspree: https://formspree.io/dashboard
+- Verificar Content-Security-Policy a la consola del navegador
+
+### Auto-renovació de Certificat SSL
+
+Configurar una tasca cron per renovar automàticament:
+
+```bash
+# Editar crontab
+sudo crontab -e
+
+# Afegir aquesta línia (renovació diària a les 2 AM)
+0 2 * * * /usr/bin/certbot renew --quiet && systemctl reload nginx
+```
+
+## 📦 Estructura de Deploy
+
+```
+deploy/
+├── deploy.sh                    # Script per pujar a servidor
+├── nginx-3cat-elink-cat.conf    # Configuració Nginx
+└── apache-3cat-elink-cat.conf   # Configuració Apache
+
+public/
+├── robots.txt                   # SEO robots
+├── _headers                     # Headers recomanats (referència)
+└── favicon.svg                  # Icon del site
+```
+
+## 🔐 Security Headers
+
+La configuració del servidor inclou headers de seguretat:
+
+- **X-Content-Type-Options**: nosniff (prevenir MIME sniffing)
+- **X-Frame-Options**: SAMEORIGIN (prevenir clickjacking)
+- **Content-Security-Policy**: Limita recursos a dominis confiables
+- **Referrer-Policy**: Control privacitat de referrer
+
+## 📝 Contingut
 
 ## 🏗️ Estructura de pàgines
 
@@ -259,8 +443,8 @@ npm run build
 # Preview de la build
 npm run preview
 
-# Deploy a Cloudflare Pages (si està configurat)
-npm run deploy
+# Deploy al servidor propi
+./deploy/deploy.sh
 ```
 
 ### Crear un bloc nou
