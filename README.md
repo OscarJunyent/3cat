@@ -106,187 +106,153 @@ src/content/
 
 Tot el contingut és en **CATALÀ**.
 
-## 🚀 Deploy
+## 🚀 Deploy a Hostinger
 
-### Requisits al Servidor
+### Flux de Deploy Automàtic
 
-- **Nginx 1.18+** (o Apache 2.4+)
-- **Accés SSH/SFTP** al servidor
-- **Certificat SSL** per a `3cat.elink.cat` (Let's Encrypt recomanat)
-- **rsync** instal·lat al servidor (per al script de deploy)
-
-### Configuració del DNS
-
-Apunta `3cat.elink.cat` al servidor on es farà hosting:
+La web es desplega automàticament a Hostinger cada vegada que fas `git push` a la branca `main`:
 
 ```
-CNAME: 3cat.elink.cat → elink.cat
-  o
-A: 3cat.elink.cat → [IP del servidor]
+Codi local → git push → GitHub Actions → FTP a Hostinger → https://3cat.elink.cat
 ```
 
-Pot trigar 24-48h en propagar-se globalment.
+### Requisits Previs
 
-### Pas 1: Configurar el Certificat SSL
+- Comptes FTP configurats a Hostinger (`hPanel` → Hosting → FTP Accounts)
+- Subdomini `3cat.elink.cat` creat a Hostinger (document root: `public_html/3cat/`)
+- 3 GitHub Secrets configurats al repositori (veure pas 3 de la guia)
+- Node.js 20+ instal·lat localment
 
-**Amb Let's Encrypt i certbot (recomanat)**:
+### Configuració Inicial (Primera Vegada)
+
+**Segueix aquesta guia completa**: [deploy/hostinger-subdomini.md](deploy/hostinger-subdomini.md)
+
+Els passos inclouen:
+1. **Crear el subdomini** a Hostinger
+2. **Obtenir credencials FTP**
+3. **Afegir GitHub Secrets** (FTP_HOST, FTP_USERNAME, FTP_PASSWORD)
+4. **Verificar el workflow** i provar el primer deploy
+
+### Configurar Variables d'Entorn (`.env`)
+
+Per al formulari de Feedback amb Formspree:
 
 ```bash
-# Instal·lar certbot (si no està instal·lat)
-sudo apt-get install certbot python3-certbot-nginx  # Nginx
-# o
-sudo apt-get install certbot python3-certbot-apache  # Apache
-
-# Generar certificat
-sudo certbot certonly --standalone -d 3cat.elink.cat
-
-# El certificat es guardarà a: /etc/letsencrypt/live/3cat.elink.cat/
-```
-
-### Pas 2: Configurar Nginx o Apache
-
-#### Nginx
-
-```bash
-# Copiar la configuració
-sudo cp deploy/nginx-3cat-elink-cat.conf /etc/nginx/sites-available/3cat.elink.cat
-
-# Crear symlink a sites-enabled
-sudo ln -s /etc/nginx/sites-available/3cat.elink.cat /etc/nginx/sites-enabled/
-
-# Verificar configuració
-sudo nginx -t
-
-# Recarregar Nginx
-sudo systemctl reload nginx
-```
-
-#### Apache
-
-```bash
-# Copiar la configuració
-sudo cp deploy/apache-3cat-elink-cat.conf /etc/apache2/sites-available/
-
-# Habilitar el site
-sudo a2ensite 3cat.elink.cat
-
-# Habilitar mòduls necessaris
-sudo a2enmod rewrite headers ssl
-
-# Verificar configuració
-sudo apache2ctl configtest
-
-# Recarregar Apache
-sudo systemctl reload apache2
-```
-
-### Pas 3: Crear Estructura de Directoris al Servidor
-
-```bash
-# Al servidor, com a root o amb sudo
-mkdir -p /var/www/3cat.elink.cat/dist
-chown deploy:deploy /var/www/3cat.elink.cat  # Canviar al usuari de deploy
-chmod 755 /var/www/3cat.elink.cat
-```
-
-### Pas 4: Configurar Variables d'Entorn
-
-Crear/editar `.env` localment:
-
-```
+# .env (local, no commit)
 PUBLIC_FORMSPREE_ID=abc123def456
 ```
 
-Substituir `abc123def456` amb l'ID real del formulari de Formspree.
+Pots obtenir el teu ID de Formspree a https://formspree.io/dashboard
 
-### Pas 5: Configurar el Script de Deploy
+**Nota**: `PUBLIC_FORMSPREE_ID` comença amb `PUBLIC_`, és a dir, no és secret i es pot visualitzar al codi generat.
 
-Editar `deploy/deploy.sh`:
+### Fluix de Desenvolupament
 
-```bash
-SERVER="elink.cat"           # Servidor destinació
-USER="deploy"                # Usuari SSH
-REMOTE_PATH="/var/www/3cat.elink.cat"  # Ruta al servidor
-```
-
-### Pas 6: Executar el Deploy
+#### Per fer canvis i desplegar-los
 
 ```bash
-# Des de la carpeta del projecte
-./deploy/deploy.sh
+# 1. Fes canvis al codi/contingut
+# Ex: edita un bloc, crea un component nou, etc.
+
+# 2. Testa localment
+npm run build
+npm run preview
+
+# 3. Fes commit i push
+git add .
+git commit -m "feat: descriptió del canvi"
+git push origin main
+
+# 4. El deploy es fa automàticament en 3-5 minuts
+#    (pots veure el progrés a GitHub → Actions)
+
+# 5. Verifica a https://3cat.elink.cat
 ```
 
-El script farà:
-1. `npm run build`
-2. Verificar que `dist/` existeix
-3. Pujar amb `rsync -avz --delete`
+### Checklist Post-Deploy
 
-### Pas 7: Verificar el Deploy
+Després que el workflow de GitHub Actions acabi amb èxit (indicador verd ✅):
 
-**Checklist post-deploy**:
-
-- [ ] Accedir a https://3cat.elink.cat i verificar que carrega
-- [ ] Verificar que el certificat SSL és vàlid (sense avisos)
-- [ ] Descarregar un PDF des de `/pdfs/` per comprovar que funciona
-- [ ] Omplir i enviar el formulari de feedback
-- [ ] Navegar per alguns blocs i verificar que els links funcionen
-- [ ] Verificar que les imatges es carreguen correctament
-- [ ] Comprovar que `robots.txt` és accessible: https://3cat.elink.cat/robots.txt
-- [ ] Comprovar que el sitemap es va generar: https://3cat.elink.cat/sitemap-index.xml
+- [ ] Accedeix a `https://3cat.elink.cat` i verifica que carrega
+- [ ] El certificat SSL és vàlid (sense avisos al navegador)
+- [ ] Clica a alguns blocs i verifica que es carreguen dinàmicament
+- [ ] Tenta descarregar un PDF
+- [ ] Completa i envia el formulari de feedback
+- [ ] Verifica que `robots.txt` es serveix: `https://3cat.elink.cat/robots.txt`
+- [ ] Verifica que el sitemap existeix: `https://3cat.elink.cat/sitemap-index.xml`
 
 ### Troubleshooting
 
-**503 Service Unavailable**:
-- Verificar que Nginx/Apache està en execució: `systemctl status nginx` o `systemctl status apache2`
-- Verificar logs: `/var/log/nginx/` o `/var/log/apache2/`
+#### GitHub Actions falla amb "FTP connection refused"
 
-**Certificat SSL no vàlid**:
-- Renovar amb certbot: `sudo certbot renew --force-renewal`
-- Verificar data d'expiracio: `sudo openssl x509 -in /etc/letsencrypt/live/3cat.elink.cat/fullchain.pem -noout -dates`
+- Verifica que els GitHub Secrets (`FTP_HOST`, `FTP_USERNAME`, `FTP_PASSWORD`) són correctes
+- Prova a conectar manualment via FTP: `ftp ftp.elink.cat`
+- Contacta amb el suport de Hostinger si el servidor FTP està restringit
 
-**Links interns retornen 404**:
-- Verificar que `try_files` (Nginx) o `RewriteRule` (Apache) estan configurats correctament
-- Astro ha de generar rutes sense extensió (ex: `/bloc-1` no `/bloc-1.html`)
+#### La web no carrega a `3cat.elink.cat`
 
-**Formspree no envia emails**:
-- Verificar `PUBLIC_FORMSPREE_ID` al `.env`
-- Comprovar logs de Formspree: https://formspree.io/dashboard
-- Verificar Content-Security-Policy a la consola del navegador
+- Verifica que el subdomini es va crear correctament a `hPanel`
+- Espera 5-10 minuts per a que Hostinger sincronitzi els DNS
+- Accedeix via FTP i verifica que `public_html/3cat/` conté `index.html`
 
-### Auto-renovació de Certificat SSL
+#### Els links interns retornen 404
 
-Configurar una tasca cron per renovar automàticament:
+Hostinger pot necessitar un `.htaccess` per servir rutes sense extensió. Puja manualment aquest fitxer via FTP a `public_html/3cat/.htaccess`:
 
-```bash
-# Editar crontab
-sudo crontab -e
-
-# Afegir aquesta línia (renovació diària a les 2 AM)
-0 2 * * * /usr/bin/certbot renew --quiet && systemctl reload nginx
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . index.html [L]
+</IfModule>
 ```
+
+#### El certificat SSL no és vàlid
+
+Hostinger genera automàticament el certificat SSL per a subdominis. Pot trigar 10-15 minuts. Refresca la pàgina.
+
+#### Formspree no envia emails
+
+- Verifica que `PUBLIC_FORMSPREE_ID` està configurat correctament al `.env`
+- Visita https://formspree.io/dashboard per veure logs del formulari
+- Comprova la consola de desenvolupador del navegador (F12) per a errors de seguretat (CSP)
 
 ## 📦 Estructura de Deploy
 
 ```
+.github/workflows/
+└── deploy.yml                  # GitHub Actions workflow
+
 deploy/
-├── deploy.sh                    # Script per pujar a servidor
-├── nginx-3cat-elink-cat.conf    # Configuració Nginx
-└── apache-3cat-elink-cat.conf   # Configuració Apache
+├── hostinger-subdomini.md      # Guia de configuració Hostinger
+├── nginx-3cat-elink-cat.conf   # Config Nginx (VPS futura)
+├── apache-3cat-elink-cat.conf  # Config Apache (VPS futura)
+└── deploy.sh                   # Script rsync (VPS futura)
 
 public/
-├── robots.txt                   # SEO robots
-├── _headers                     # Headers recomanats (referència)
-└── favicon.svg                  # Icon del site
+├── robots.txt                  # SEO robots
+├── _headers                    # Headers de referència
+└── favicon.svg                 # Icon del site
 ```
+
+### Migración Future a VPS
+
+Si en el futur vols migrar a un VPS propi (Nginx/Apache), ja tenim els fitxers de configuració:
+- `deploy/nginx-3cat-elink-cat.conf` - Configuració Nginx completa (SSL, caching, routing)
+- `deploy/apache-3cat-elink-cat.conf` - Configuració Apache equivalent
+- `deploy/deploy.sh` - Script rsync per deploy manual
 
 ## 🔐 Security Headers
 
-La configuració del servidor inclou headers de seguretat:
+La configuració actual de Hostinger inclou:
 
-- **X-Content-Type-Options**: nosniff (prevenir MIME sniffing)
-- **X-Frame-Options**: SAMEORIGIN (prevenir clickjacking)
-- **Content-Security-Policy**: Limita recursos a dominis confiables
-- **Referrer-Policy**: Control privacitat de referrer
+- **HTTPS/SSL**: Certificat Let's Encrypt automàtic
+- **X-Content-Type-Options**: nosniff
+- **X-Frame-Options**: SAMEORIGIN
+- **Content-Security-Policy**: Accepta Formspree per a formularis
 
 ## 📝 Contingut
 
@@ -443,8 +409,13 @@ npm run build
 # Preview de la build
 npm run preview
 
-# Deploy al servidor propi
-./deploy/deploy.sh
+# Deploy automàtic en fer push
+git add .
+git commit -m "feat: descripció del canvi"
+git push origin main
+
+# El workflow de GitHub Actions es triggerà automàticament
+# (veure progrés a GitHub → Actions)
 ```
 
 ### Crear un bloc nou
