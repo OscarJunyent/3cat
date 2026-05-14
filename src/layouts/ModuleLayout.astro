@@ -13,8 +13,8 @@ interface Props {
   duration: string;
   audience: string;
   date?: string;
-  prevBlock?: Block;
-  nextBlock?: Block;
+  prevBlock?: Block | null;
+  nextBlock?: Block | null;
 }
 
 const { title, blockId, duration, audience, date, prevBlock, nextBlock } = Astro.props;
@@ -22,67 +22,95 @@ const { title, blockId, duration, audience, date, prevBlock, nextBlock } = Astro
 
 <BaseLayout title={`${title} - 3Cat × Elink`}>
   <article>
-    {/* Hero section */}
-    <section class="bg-gradient-to-r from-elink/10 to-transparent py-12 border-b border-gray-200">
-      <div class="container-max">
-        <div class="mb-4 text-sm text-text-secondary">
-          <a href="/blocs" class="text-elink hover:underline">Blocs</a>
+
+    <!-- Hero fosc -->
+    <section class="bg-bg-dark text-white">
+      <div class="container-max py-16">
+
+        <!-- Breadcrumb -->
+        <div class="mb-6 text-sm text-white/40">
+          <a href="/blocs" class="text-white/40 hover:text-white/80 transition-colors no-underline">Blocs</a>
           <span class="mx-2">/</span>
-          <span>{blockId}</span>
+          <span class="text-white/70">{blockId}</span>
         </div>
-        <h1 class="text-h1 mb-6 text-elink">{title}</h1>
-        
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <p class="text-small text-text-secondary font-medium">DURADA</p>
-            <p class="text-lg font-semibold mt-1">{duration}</p>
-          </div>
-          <div>
-            <p class="text-small text-text-secondary font-medium">AUDIÈNCIA</p>
-            <p class="text-lg font-semibold mt-1">{audience}</p>
-          </div>
+
+        <!-- Badge -->
+        <div class="inline-flex items-center px-3 py-1 rounded-full bg-elink text-white text-xs font-bold mb-5 uppercase tracking-wider">
+          {blockId.replace('-', ' ')}
+        </div>
+
+        <!-- Títol -->
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight tracking-tight mb-8 max-w-3xl">
+          {title}
+        </h1>
+
+        <!-- Pills -->
+        <div class="flex flex-wrap gap-3">
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {duration}
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            {audience}
+          </span>
           {date && (
-            <div>
-              <p class="text-small text-text-secondary font-medium">DATA</p>
-              <p class="text-lg font-semibold mt-1">{date}</p>
-            </div>
+            <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {date}
+            </span>
           )}
         </div>
       </div>
     </section>
 
-    {/* Main content */}
-    <section class="section-padding container-max">
-      <slot />
+    <!-- Main content -->
+    <section class="py-16 md:py-20">
+      <div class="container-max">
+        <div class="max-w-3xl mx-auto">
+          <slot />
+        </div>
+      </div>
     </section>
 
-    {/* Navigation */}
-    <section class="section-padding bg-bg-light border-t border-gray-200">
-      <div class="container-max">
-        <nav class="grid grid-cols-2 gap-8">
+    <!-- Prev / Next -->
+    <section class="bg-bg-light border-t border-border-subtle">
+      <div class="container-max py-10">
+        <nav class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {prevBlock ? (
-            <a href={`/bloc/${prevBlock.id}`} class="group no-underline">
-              <div class="text-sm text-text-secondary font-medium mb-2">← BLOC ANTERIOR</div>
-              <div class="text-lg font-semibold text-text-primary group-hover:text-elink transition-colors">
-                {prevBlock.title}
+            <a href={`/${prevBlock.id}`}
+              class="group no-underline flex items-center gap-4 p-5 rounded-xl bg-white border border-border-subtle hover:border-elink transition-all duration-200">
+              <span class="text-text-secondary group-hover:text-elink transition-colors text-xl">←</span>
+              <div>
+                <div class="text-xs text-text-secondary font-medium mb-1 uppercase tracking-wider">Bloc anterior</div>
+                <div class="text-sm font-semibold text-text-primary group-hover:text-elink transition-colors leading-snug">
+                  {prevBlock.title}
+                </div>
               </div>
             </a>
-          ) : (
-            <div></div>
-          )}
-          
+          ) : <div />}
+
           {nextBlock ? (
-            <a href={`/bloc/${nextBlock.id}`} class="group no-underline text-right">
-              <div class="text-sm text-text-secondary font-medium mb-2">BLOC SEGÜENT →</div>
-              <div class="text-lg font-semibold text-text-primary group-hover:text-elink transition-colors">
-                {nextBlock.title}
+            <a href={`/${nextBlock.id}`}
+              class="group no-underline flex items-center justify-between gap-4 p-5 rounded-xl bg-white border border-border-subtle hover:border-elink transition-all duration-200">
+              <div>
+                <div class="text-xs text-text-secondary font-medium mb-1 uppercase tracking-wider">Bloc següent</div>
+                <div class="text-sm font-semibold text-text-primary group-hover:text-elink transition-colors leading-snug">
+                  {nextBlock.title}
+                </div>
               </div>
+              <span class="text-text-secondary group-hover:text-elink transition-colors text-xl flex-shrink-0">→</span>
             </a>
-          ) : (
-            <div></div>
-          )}
+          ) : <div />}
         </nav>
       </div>
     </section>
+
   </article>
 </BaseLayout>

@@ -8,13 +8,22 @@ const blocsOrdered = allBlocs.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <BaseLayout title="Blocs - 3Cat × Elink">
-  <section class="section-padding container-max">
-    <h1 class="mb-4">Blocs de Contingut</h1>
-    <p class="text-lg text-text-secondary mb-12">
-      Explora els blocs temàtics de la formació en Intelligència Artificial.
-    </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+  <!-- Page header -->
+  <div class="bg-bg-light border-b border-border-subtle">
+    <div class="container-max py-14">
+      <h1 class="text-4xl font-extrabold text-text-primary tracking-tight mb-3">
+        Blocs de Contingut
+      </h1>
+      <p class="text-lg text-text-secondary max-w-xl">
+        Programa complet de 7 mòduls i un hackathon final sobre Intel·ligència Artificial aplicada.
+      </p>
+    </div>
+  </div>
+
+  <!-- Grid -->
+  <div class="container-max py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {blocsOrdered.map((entry) => {
         const { blockId, number, title, duration, audience, summary } = entry.data;
         return (
@@ -31,14 +40,15 @@ const blocsOrdered = allBlocs.sort((a, b) => a.data.order - b.data.order);
       })}
     </div>
 
-    <div class="mt-16 p-8 bg-elink/5 border border-elink/20 rounded-lg text-center">
-      <h3 class="text-h4 mb-3">Vols aprofundir?</h3>
-      <p class="text-text-secondary mb-4">
+    <div class="mt-14 p-8 bg-bg-light border border-border-subtle rounded-xl text-center">
+      <h3 class="text-lg font-bold text-text-primary tracking-tight mb-2">Vols aprofundir?</h3>
+      <p class="text-sm text-text-secondary mb-6">
         Cada bloc inclou exercicis pràctics, presentacions en PDF i recursos addicionals.
       </p>
       <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="btn-primary">
         Contacta amb Elink.cat
       </a>
     </div>
-  </section>
+  </div>
+
 </BaseLayout>

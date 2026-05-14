@@ -1,12 +1,19 @@
 ---
+import { getCollection } from 'astro:content';
 import '../styles/global.css';
+
+const blocs = await getCollection('blocs');
+const blocsOrdered = blocs.sort((a, b) => a.data.order - b.data.order);
 
 interface Props {
   title?: string;
   description?: string;
 }
 
-const { title = '3Cat x Elink - Portal de Formació en IA', description = 'Portal de materials de formació en Intelligència Artificial' } = Astro.props;
+const {
+  title = '3Cat × Elink - Portal de Formació en IA',
+  description = "Portal de materials de formació en Intel·ligència Artificial per a l'àrea d'Enginyeria de 3Cat.",
+} = Astro.props;
 ---
 
 <!doctype html>
@@ -19,91 +26,157 @@ const { title = '3Cat x Elink - Portal de Formació en IA', description = 'Porta
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body class="bg-white text-text-primary">
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-      <nav class="container-max py-4 flex items-center justify-between">
-        <!-- Logo Elink -->
-        <div class="flex items-center gap-3">
-          <a href="/" class="text-2xl font-bold text-elink hover:no-underline">
-            3CAT × ELINK
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-white border-b border-border-subtle">
+      <div class="container-max flex items-center justify-between h-16">
+
+        <!-- Logo -->
+        <a href="/" class="no-underline flex-shrink-0">
+          <img src="/images/logo-elink.svg" alt="Elink.cat" class="h-7" />
+        </a>
+
+        <!-- Desktop nav -->
+        <nav class="hidden md:flex items-center gap-7">
+          <a href="/"
+            class="text-sm font-medium text-[#444] hover:text-elink no-underline transition-colors">
+            Inici
+          </a>
+
+          <!-- Blocs dropdown -->
+          <div class="relative group">
+            <button class="flex items-center gap-1 text-sm font-medium text-[#444] hover:text-elink transition-colors py-1 cursor-default">
+              Blocs
+              <svg class="w-3.5 h-3.5 mt-0.5 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown panel -->
+            <div class="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-[580px] bg-white border border-border-subtle rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.1)] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+              <div class="p-3 grid grid-cols-2 gap-1">
+                {blocsOrdered.map((b) => (
+                  <a
+                    href={`/${b.data.blockId}`}
+                    class="flex items-center gap-3 p-3 rounded-lg hover:bg-bg-light no-underline transition-colors group/item"
+                  >
+                    <span class="w-9 h-9 rounded-lg bg-code-bg text-text-secondary text-sm font-bold flex items-center justify-center flex-shrink-0 group-hover/item:bg-elink group-hover/item:text-white transition-colors">
+                      {b.data.number}
+                    </span>
+                    <div class="min-w-0">
+                      <div class="text-sm font-medium text-text-primary group-hover/item:text-elink transition-colors truncate">
+                        {b.data.title}
+                      </div>
+                      <div class="text-xs text-[#999] mt-0.5">{b.data.duration}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+              <div class="px-4 py-3 border-t border-border-subtle">
+                <a href="/blocs" class="text-sm text-elink font-medium no-underline hover:underline">
+                  Veure tots els blocs →
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <a href="/feedback"
+            class="text-sm font-medium text-[#444] hover:text-elink no-underline transition-colors">
+            Feedback
+          </a>
+
+          <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="no-underline">
+            <span class="inline-flex items-center px-4 py-2 border border-elink text-elink text-sm font-medium rounded-lg hover:bg-elink hover:text-white transition-colors cursor-pointer">
+              Visita Elink.cat
+            </span>
+          </a>
+        </nav>
+
+        <!-- Mobile hamburger -->
+        <button id="mobileMenuBtn" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Obrir menú">
+          <span class="block w-5 h-0.5 bg-text-primary transition-all"></span>
+          <span class="block w-5 h-0.5 bg-text-primary transition-all"></span>
+          <span class="block w-5 h-0.5 bg-text-primary transition-all"></span>
+        </button>
+      </div>
+
+      <!-- Mobile menu -->
+      <div id="mobileMenu" class="hidden md:hidden border-t border-border-subtle bg-white">
+        <div class="container-max py-4">
+          <a href="/" class="flex items-center py-3 text-sm font-medium text-text-primary hover:text-elink no-underline border-b border-[#F5F5F5]">
+            Inici
+          </a>
+          <div class="py-3 border-b border-[#F5F5F5]">
+            <div class="text-xs font-semibold text-[#999] uppercase tracking-wider mb-2">Blocs</div>
+            <div class="space-y-1">
+              {blocsOrdered.map((b) => (
+                <a
+                  href={`/${b.data.blockId}`}
+                  class="flex items-center gap-3 py-2 text-sm text-text-primary hover:text-elink no-underline"
+                >
+                  <span class="w-6 h-6 rounded bg-code-bg text-text-secondary text-xs font-bold flex items-center justify-center flex-shrink-0">
+                    {b.data.number}
+                  </span>
+                  {b.data.title}
+                </a>
+              ))}
+            </div>
+          </div>
+          <a href="/feedback" class="flex items-center py-3 text-sm font-medium text-text-primary hover:text-elink no-underline border-b border-[#F5F5F5]">
+            Feedback
+          </a>
+          <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="flex items-center py-3 text-sm font-medium text-elink no-underline">
+            Visita Elink.cat ↗
           </a>
         </div>
-
-        <!-- Navigation -->
-        <ul class="hidden md:flex items-center gap-8">
-          <li>
-            <a href="/" class="text-text-primary hover:text-elink transition-colors no-underline">
-              Inici
-            </a>
-          </li>
-          <li>
-            <a href="/blocs" class="text-text-primary hover:text-elink transition-colors no-underline">
-              Blocs
-            </a>
-          </li>
-          <li>
-            <a href="/feedback" class="text-text-primary hover:text-elink transition-colors no-underline">
-              Feedback
-            </a>
-          </li>
-          <li>
-            <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="no-underline">
-              <button class="btn-primary text-sm">
-                Visita Elink.cat
-              </button>
-            </a>
-          </li>
-        </ul>
-
-        <!-- Mobile Menu Toggle -->
-        <button class="md:hidden text-2xl text-elink">
-          ☰
-        </button>
-      </nav>
+      </div>
     </header>
 
-    <main class="min-h-screen">
+    <main>
       <slot />
     </main>
 
-    <footer class="bg-gray-900 text-white mt-20">
-      <div class="container-max py-16">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-8">
-          <!-- About -->
+    <!-- FOOTER -->
+    <footer class="bg-bg-dark text-white mt-20">
+      <div class="container-max py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
+
           <div>
-            <h3 class="text-h4 mb-4 text-elink">Sobre aquest projecte</h3>
-            <p class="text-small text-gray-400">
-              Portal de materials de formació en Intelligència Artificial impartida per Elink.cat a l'àrea d'Enginyeria de 3Cat (CCMA).
+            <img src="/images/logo-elink-white.svg" alt="Elink.cat" class="h-6 mb-5" />
+            <p class="text-sm text-[#888] leading-relaxed">
+              Portal de materials de formació en Intel·ligència Artificial impartida per Elink.cat
+              a l'àrea d'Enginyeria de 3Cat (CCMA).
             </p>
           </div>
 
-          <!-- Links -->
           <div>
-            <h3 class="text-h4 mb-4 text-elink">Enllaços</h3>
-            <ul class="space-y-3">
+            <h4 class="text-sm font-semibold text-white mb-4">Enllaços</h4>
+            <ul class="space-y-2.5">
               <li>
-                <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-elink transition-colors">
+                <a href="https://elink.cat" target="_blank" rel="noopener noreferrer"
+                  class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
                   Elink.cat
                 </a>
               </li>
               <li>
-                <a href="https://www.ccma.cat" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-elink transition-colors">
+                <a href="https://www.ccma.cat" target="_blank" rel="noopener noreferrer"
+                  class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
                   3Cat (CCMA)
                 </a>
               </li>
             </ul>
           </div>
 
-          <!-- Resources -->
           <div>
-            <h3 class="text-h4 mb-4 text-elink">Recursos</h3>
-            <ul class="space-y-3">
+            <h4 class="text-sm font-semibold text-white mb-4">Recursos</h4>
+            <ul class="space-y-2.5">
               <li>
-                <a href="/blocs" class="text-gray-400 hover:text-elink transition-colors">
+                <a href="/blocs" class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
                   Blocs de contingut
                 </a>
               </li>
               <li>
-                <a href="/feedback" class="text-gray-400 hover:text-elink transition-colors">
+                <a href="/feedback" class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
                   Envia feedback
                 </a>
               </li>
@@ -111,12 +184,16 @@ const { title = '3Cat x Elink - Portal de Formació en IA', description = 'Porta
           </div>
         </div>
 
-        <!-- Copyright -->
-        <div class="border-t border-gray-700 pt-8 text-center text-small text-gray-400">
-          <p>© 2026 Elink.cat × 3Cat (CCMA). Tots els drets reservats.</p>
-          <p class="mt-2">Formació en Intelligència Artificial</p>
+        <div class="border-t border-[#333] pt-6 text-center">
+          <p class="text-xs text-[#555]">© 2026 Elink.cat × 3Cat (CCMA). Tots els drets reservats.</p>
         </div>
       </div>
     </footer>
+
+    <script>
+      const btn = document.getElementById('mobileMenuBtn');
+      const menu = document.getElementById('mobileMenu');
+      btn?.addEventListener('click', () => menu?.classList.toggle('hidden'));
+    </script>
   </body>
 </html>
