@@ -55,7 +55,7 @@ artifact:
   - "Estructura .github/skills/ definida"
   - "Exemples d'instructions reutilitzables"
   - "Criteri per diferenciar Skills i Agents"
-pdfFile: "presentacio-bloc-2.pdf"
+pdfFile: "bloc-2-agents-skills.pdf"
 prevBlock: { id: "bloc-1", title: "Fonaments i ús de GitHub Copilot Enterprise" }
 nextBlock: { id: "bloc-3", title: "MCP i Protocols de Connexió IA" }
 ---

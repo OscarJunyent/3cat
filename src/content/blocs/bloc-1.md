@@ -46,7 +46,7 @@ artifact:
   - "Tests automatitzats per casos d'èxit i error"
   - "Fitxer .github/copilot-instructions.md configurat"
   - "Criteri per escollir mode i model segons la tasca"
-pdfFile: "presentacio-bloc-1.pdf"
+pdfFile: "bloc-1-fonaments-copilot.pdf"
 prevBlock: null
 nextBlock: { id: "bloc-2", title: "Skills i Agents amb GitHub Copilot" }
 ---
