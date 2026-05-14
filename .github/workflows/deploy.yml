@@ -41,4 +41,4 @@ jobs:
 
       - name: 📂 Upload build al servidor via rsync
         run: |
-          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -p 65002" dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u391072230/domains/elink.cat/public_html/3cat/
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -p 65002" dist/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/u391072230/domains/3cat.elink.cat/public_html/
