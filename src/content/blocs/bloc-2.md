@@ -42,6 +42,13 @@ commands:
   - label: "Executar Agent revisor"
     language: "bash"
     code: "@bitbucket-jira-pr-reviewer"
+screenshots:
+  - src: "/screenshots/bloc-2-skills-structure.png"
+    alt: "Estructura d'una Skill de GitHub Copilot"
+    caption: "Organització dels fitxers i instruccions reutilitzables d'una Skill"
+  - src: "/screenshots/bloc-2-agent-reviewer.png"
+    alt: "Agent especialitzat de revisió de pull requests"
+    caption: "Configuració d'un Agent amb eines i permisos controlats"
 artifact:
   - "Skill vitest-test-generator funcional"
   - "Agent de revisió de PR configurat"

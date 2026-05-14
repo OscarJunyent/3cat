@@ -33,6 +33,13 @@ commands:
   - label: "Executar el projecte"
     language: "bash"
     code: "npm install && npm run dev"
+screenshots:
+  - src: "/screenshots/bloc-1-copilot-modes.png"
+    alt: "Modes de GitHub Copilot"
+    caption: "Comparativa pràctica entre Ask, Edit, Plan i Agent"
+  - src: "/screenshots/bloc-1-endpoint-workshop.png"
+    alt: "Implementació de l'endpoint del taller"
+    caption: "Flux de treball per implementar i validar l'endpoint amb Copilot"
 artifact:
   - "Endpoint GET /shows/:id/episodes/:episodeId funcional"
   - "Validació d'inputs integrada"
