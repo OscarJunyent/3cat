@@ -10,68 +10,96 @@ interface Props {
 }
 
 const { id, number, title, duration, audience, summary, href } = Astro.props;
-const isHackathon = id.toLowerCase().includes('hackathon');
+const isHackathon = id === 'hackathon';
+const isDisabled = ['bloc-a', 'bloc-b', 'hackathon'].includes(id);
+const badgeNumber = isHackathon ? 'H' : number;
 ---
 
-<a
-  href={href}
-  class:list={[
-    "group block no-underline rounded-xl border transition-all duration-200",
-    isHackathon
-      ? "bg-bg-dark border-bg-dark hover:border-elink"
-      : "bg-white border-border-subtle hover:border-elink hover:shadow-[0_2px_12px_rgba(229,50,45,0.08)] hover:-translate-y-0.5",
-  ]}
->
-  <div class="p-6">
-    <!-- Number + duration -->
-    <div class="flex items-start justify-between mb-5">
+{isDisabled ? (
+  <div
+    class:list={[
+      "block rounded-xl border opacity-50 cursor-not-allowed select-none",
+      isHackathon
+        ? "bg-bg-dark border-bg-dark"
+        : "bg-white border-border-subtle",
+    ]}
+  >
+    <div class="p-6">
+      <div class="flex items-start justify-between mb-5">
+        <div
+          class:list={[
+            "w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl",
+            isHackathon ? "bg-elink text-white" : "bg-code-bg text-text-secondary",
+          ]}
+        >
+          {badgeNumber}
+        </div>
+        <span
+          class:list={[
+            "text-xs font-medium px-2.5 py-1 rounded-md",
+            isHackathon ? "bg-white/10 text-white/60" : "bg-code-bg text-text-secondary",
+          ]}
+        >
+          {duration}
+        </span>
+      </div>
+
+      <h3
+        class:list={[
+          "text-[1.05rem] font-bold mb-3 leading-snug tracking-tight",
+          isHackathon ? "text-white" : "text-text-primary",
+        ]}
+      >
+        {title}
+      </h3>
+
+      <p
+        class:list={[
+          "text-sm leading-relaxed mb-5 line-clamp-2",
+          isHackathon ? "text-white/60" : "text-text-secondary",
+        ]}
+      >
+        {summary}
+      </p>
+
       <div
         class:list={[
-          "w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl",
-          isHackathon ? "bg-elink text-white" : "bg-code-bg text-text-secondary",
+          "flex items-center justify-between pt-4 border-t text-xs font-medium",
+          isHackathon ? "border-white/10 text-white/40" : "border-[#F0F0F0] text-[#AAA]",
         ]}
       >
-        {number}
+        <span>👥 {audience}</span>
+        <span class="text-xs italic">Pròximament</span>
       </div>
-      <span
-        class:list={[
-          "text-xs font-medium px-2.5 py-1 rounded-md",
-          isHackathon ? "bg-white/10 text-white/60" : "bg-code-bg text-text-secondary",
-        ]}
-      >
-        {duration}
-      </span>
-    </div>
-
-    <!-- Title -->
-    <h3
-      class:list={[
-        "text-[1.05rem] font-bold mb-3 leading-snug tracking-tight group-hover:text-elink transition-colors",
-        isHackathon ? "text-white" : "text-text-primary",
-      ]}
-    >
-      {title}
-    </h3>
-
-    <!-- Summary -->
-    <p
-      class:list={[
-        "text-sm leading-relaxed mb-5 line-clamp-2",
-        isHackathon ? "text-white/60" : "text-text-secondary",
-      ]}
-    >
-      {summary}
-    </p>
-
-    <!-- Footer -->
-    <div
-      class:list={[
-        "flex items-center justify-between pt-4 border-t text-xs font-medium",
-        isHackathon ? "border-white/10 text-white/40" : "border-[#F0F0F0] text-[#AAA]",
-      ]}
-    >
-      <span>👥 {audience}</span>
-      <span class="group-hover:text-elink transition-colors">→</span>
     </div>
   </div>
-</a>
+) : (
+  <a
+    href={href}
+    class="group block no-underline rounded-xl border border-border-subtle bg-white transition-all duration-200 hover:border-elink hover:shadow-[0_2px_12px_rgba(229,50,45,0.08)] hover:-translate-y-0.5"
+  >
+    <div class="p-6">
+      <div class="flex items-start justify-between mb-5">
+        <div class="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-xl bg-code-bg text-text-secondary">
+          {badgeNumber}
+        </div>
+        <span class="text-xs font-medium px-2.5 py-1 rounded-md bg-code-bg text-text-secondary">
+          {duration}
+        </span>
+      </div>
+
+      <h3 class="text-[1.05rem] font-bold mb-3 leading-snug tracking-tight text-text-primary group-hover:text-elink transition-colors">
+        {title}
+      </h3>
+
+      <p class="text-sm leading-relaxed mb-5 line-clamp-2 text-text-secondary">
+        {summary}
+      </p>
+
+      <div class="flex items-center justify-between pt-4 border-t border-[#F0F0F0] text-xs font-medium text-[#AAA]">
+        <span>👥 {audience}</span>
+        <span class="group-hover:text-elink transition-colors">→</span>
+      </div>
+    </div>
+  </a>
+)}
