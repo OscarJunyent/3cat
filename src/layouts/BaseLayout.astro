@@ -33,7 +33,7 @@ const {
         </a>
 
         <!-- Desktop nav -->
-        <nav class="hidden md:flex items-center gap-7">
+        <nav class="hidden md:flex items-center gap-5">
           <a href="/"
             class="text-sm font-medium text-[#444] hover:text-elink no-underline transition-colors">
             Inici
@@ -47,6 +47,12 @@ const {
           <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="no-underline">
             <span class="inline-flex items-center px-4 py-2 border border-elink text-elink text-sm font-medium rounded-lg hover:bg-elink hover:text-white transition-colors cursor-pointer">
               Visita Elinkcat
+            </span>
+          </a>
+
+          <a href="https://capficat.cat/" target="_blank" rel="noopener noreferrer" class="no-underline">
+            <span class="inline-flex items-center px-4 py-2 border border-[#09B8A8] text-[#078F83] text-sm font-medium rounded-lg hover:bg-[#09B8A8] hover:text-white transition-colors cursor-pointer">
+              Visita Capficat
             </span>
           </a>
         </nav>
@@ -68,8 +74,11 @@ const {
           <a href="/feedback" class="flex items-center py-3 text-sm font-medium text-text-primary hover:text-elink no-underline border-b border-[#F5F5F5]">
             Feedback
           </a>
-          <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="flex items-center py-3 text-sm font-medium text-elink no-underline">
+          <a href="https://elink.cat" target="_blank" rel="noopener noreferrer" class="flex items-center py-3 text-sm font-medium text-elink no-underline border-b border-[#F5F5F5]">
             Visita Elinkcat ↗
+          </a>
+          <a href="https://capficat.cat/" target="_blank" rel="noopener noreferrer" class="flex items-center py-3 text-sm font-medium text-[#078F83] no-underline">
+            Visita Capficat ↗
           </a>
         </div>
       </div>
@@ -85,7 +94,16 @@ const {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
 
           <div>
-            <img src="/images/elinkcat_logo.png" alt="Elinkcat" class="h-6 mb-5 brightness-0 invert" />
+            <div class="mb-5 flex flex-wrap items-center gap-3">
+              <img src="/images/elinkcat_logo.png" alt="Elinkcat" class="h-6 brightness-0 invert" />
+              <span class="text-white/40 text-sm font-medium">×</span>
+              <img src="/images/3Cat_logo.jpg" alt="3Cat" class="h-8 w-auto rounded bg-white object-contain" />
+              <span class="text-white/40 text-sm font-medium">×</span>
+              <span class="inline-flex items-center gap-2">
+                <img src="/images/capficat.jpeg" alt="Capficat" class="h-8 w-8 rounded-md object-cover" />
+                <span class="text-sm font-semibold text-[#09B8A8]">Capficat</span>
+              </span>
+            </div>
             <p class="text-sm text-[#888] leading-relaxed">
               Portal de materials de formació en Intel·ligència Artificial impartida per Elinkcat
               a l'àrea d'Enginyeria de 3Cat (CCMA).
@@ -105,6 +123,12 @@ const {
                 <a href="https://www.ccma.cat" target="_blank" rel="noopener noreferrer"
                   class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
                   3Cat (CCMA)
+                </a>
+              </li>
+              <li>
+                <a href="https://capficat.cat/" target="_blank" rel="noopener noreferrer"
+                  class="text-[#AAA] hover:text-white text-sm no-underline transition-colors">
+                  Capficat
                 </a>
               </li>
             </ul>
@@ -128,7 +152,7 @@ const {
         </div>
 
         <div class="border-t border-[#333] pt-6 text-center">
-          <p class="text-xs text-[#555]">© 2026 Elinkcat × 3Cat (CCMA). Tots els drets reservats.</p>
+          <p class="text-xs text-[#555]">© 2026 Elinkcat × 3Cat (CCMA) × Capficat. Tots els drets reservats.</p>
         </div>
       </div>
     </footer>
