@@ -5,7 +5,6 @@ export default {
     extend: {
       colors: {
         'elink':          '#E5322D',
-        'elink-dark':     '#C42B27',
         'text-primary':   '#111111',
         'text-secondary': '#666666',
         'bg-light':       '#F8F8F8',
@@ -23,10 +22,6 @@ export default {
         'h4':    ['1.25rem',  { lineHeight: '1.5', fontWeight: '500' }],
         'body':  ['1rem',     { lineHeight: '1.6', fontWeight: '400' }],
         'small': ['0.875rem', { lineHeight: '1.5', fontWeight: '400' }],
-      },
-      spacing: {
-        'section':    '5rem',
-        'section-sm': '2rem',
       },
     },
   },
