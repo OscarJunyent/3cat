@@ -54,6 +54,15 @@ commands:
       // HTTP remot → GitHub MCP oficial. OAuth automàtic.
       // HTTP remot corporatiu → Compte Enterprise de 3Cat.
       // STDIO local propi → El server que construïu avui.
+  - label: Repositoris de codi
+    code:      
+     {
+        "repositoris ": {       
+            "branca mcp": "https://api.githubcopilot.com/mcp"
+            "mcp wikipedia": "https://github.com/Formacio-3Cat/3cat-wikipedia-mcp"
+            "mcp tv-maze": "https://github.com/Formacio-3Cat/3cat-tvmaze-mcp"
+        }
+      }
   - label: "MCP server mínim — 15 línies de TypeScript"
     language: "typescript"
     code: |
