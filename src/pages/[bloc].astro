@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import ModuleLayout from '../layouts/ModuleLayout.astro';
 import PracticeExercise from '../components/PracticeExercise.astro';
 import CommandBlock from '../components/CommandBlock.astro';
-import Screenshot from '../components/Screenshot.astro';
 import ArtifactCard from '../components/ArtifactCard.astro';
 import PdfDownload from '../components/PdfDownload.astro';
 
@@ -98,23 +97,6 @@ const {
       )}
     </PracticeExercise>
   </section>
-
-  {/* Captures */}
-  {screenshots && screenshots.length > 0 && (
-    <section class="mb-16">
-      <h2>Visualitzacions</h2>
-      <div class="space-y-8">
-        {screenshots.map((screenshot: any, idx: number) => (
-          <Screenshot
-            key={idx}
-            src={screenshot.src}
-            alt={screenshot.alt}
-            caption={screenshot.caption}
-          />
-        ))}
-      </div>
-    </section>
-  )}
 
   {/* Lliurables */}
   <section class="mb-16">
