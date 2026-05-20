@@ -10,27 +10,27 @@ dateOptions:
   - "12 de maig 2026 (Grup A — alternativa)"
   - "13 de maig 2026 (Grup B)"
   - "15 de maig 2026 (Grup B — alternativa)"
-summary: "Construïm un servidor MCP real que correrà al vostre portàtil i el connectem als sistemes interns de 3Cat."
-objective: "Entendre MCP, construir un servidor real i provar-lo integrat a Copilot. Al final del bloc, cada developer podrà consultar sistemes interns sense sortir de l'IDE."
+summary: "Construïm un servidor MCP real que correrà al vostre portàtil i el connectem a serveis reals."
+objective: "Entendre MCP, provar servidors MCP existents i construir-ne dos de nous connectats a serveis reals. Al final del bloc, cada developer tindrà un MCP server operatiu i connectat al seu entorn de treball."
 keyTopics:
   - name: "Entendre MCP"
     duration: "30 min"
     description: "El protocol que connecta models d'IA amb els nostres sistemes interns. L'analogia del USB-C: un estàndard que fa que qualsevol model parli amb qualsevol sistema. Dades del 2026: 15.000+ servers públics, 97M descàrregues/mes, adoptat per Anthropic, OpenAI, GitHub, Microsoft i Google."
   - name: "Anatomia del consum d'MCP"
     duration: "20 min"
-    description: "Tres tipus de transports: STDIO (local, el més comú), HTTP (remot, el modern) i SSE (legacy, deprecat). Tres llocs de configuració: Workspace (.vscode/mcp.json), User profile i Copilot CLI."
-  - name: "Taller 1 — Consumir 2 MCP servers"
+    description: "Tres tipus de transports: STDIO (local, el més comú), HTTP (remot, el modern) i SSE (legacy, deprecat). Tres llocs de configuració: Workspace (.vscode/mcp.json), User profile (~/.config/) i Copilot CLI (~/.copilot/mcp-config.json)."
+  - name: "Taller 1 — Provar 2 MCP servers"
     duration: "30 min"
-    description: "MCP de GitHub (issues del repo), MCP de Fetch (cercar info sobre programes de TV3 com Polònia) i combinació de les dues eines."
+    description: "MCP de GitHub Personal (issues del repo 3cat-shows-api), MCP de GitHub 3Cat (repositoris de l'organització) i Bonus (crear un repositori nou amb primer commit i README)."
   - name: "Anatomia d'un MCP server"
     duration: "15 min"
     description: "15 línies de TypeScript. Si saps fer un endpoint d'API, ja saps fer un MCP server. Imports, instanciar, definir tools, connectar transport. El mateix patró funciona en Java, C#/.NET, Python i altres."
-  - name: "Taller 2 — Completar 2 MCP servers"
+  - name: "Taller 2 — Construir 2 MCP servers"
     duration: "35 min"
     description: "Dos repos starter amb scaffolding: 3cat-tvmaze-mcp (completar get_episodes) i 3cat-wikipedia-mcp (completar get_article_summary). Pregunta de prova combinada: sinopsi i episodis de Merlí."
 practiceExercise:
-  title: "Construir i completar 2 MCP servers sobre APIs de contingut audiovisual"
-  description: "No construïm des de zero — tenim dos repos starter. El 3cat-tvmaze-mcp té la tool search_show() feta; cal completar get_episodes() (endpoint: api.tvmaze.com/shows/:id/episodes, amb fallback silenciós si retorna 429). El 3cat-wikipedia-mcp té search_article() feta; cal completar get_article_summary() (endpoint: Wikipedia REST API, sense fallback — rate limit alt). Un cop completats, la pregunta de prova és: «Quina és la sinopsi de Merlí, i quants episodis va tenir? Combina Wikipedia i TVMaze.»"
+  title: "Completar 2 MCP servers sobre APIs de contingut audiovisual"
+  description: "No construïm des de zero — tenim dos repos starter. El 3cat-tvmaze-mcp té la tool search_show() feta; cal completar get_episodes() (endpoint: api.tvmaze.com/shows/:id/episodes — atenció: TVMaze té un rate limit baix i pot retornar 429). El 3cat-wikipedia-mcp té search_article() feta; cal completar get_article_summary() (endpoint: Wikipedia REST API). Un cop completats, la pregunta de prova és: «Quina és la sinopsi de Merlí, i quants episodis va tenir? Combina Wikipedia i TVMaze.»"
 commands:
   - label: "El fitxer mcp.json — tres entrades, ja teniu MCP"
     language: "json"
@@ -41,9 +41,9 @@ commands:
             "type": "http",
             "url": "https://api.githubcopilot.com/mcp"
           },
-          "fetch": {
-            "command": "npx",
-            "args": ["-y", "@modelcontextprotocol/server-fetch"]
+          "github-corporation": {
+            "type": "http",
+            "url": "https://api.githubcopilot.com/mcp"
           },
           "3cat-tvmaze": {
             "command": "node",
@@ -51,6 +51,9 @@ commands:
           }
         }
       }
+      // HTTP remot → GitHub MCP oficial. OAuth automàtic.
+      // HTTP remot corporatiu → Compte Enterprise de 3Cat.
+      // STDIO local propi → El server que construïu avui.
   - label: "MCP server mínim — 15 línies de TypeScript"
     language: "typescript"
     code: |
@@ -114,6 +117,7 @@ commands:
           }
       }
       // Instanciar · Registrar tools (nom + descripció + schema + handler) · Connectar.
+      // EL MATEIX PATRÓ CONCEPTUAL.
 screenshots:
   - src: "/screenshots/bloc-3-01.png"
     alt: "Diagrama Sense MCP vs Amb MCP"
@@ -122,8 +126,11 @@ screenshots:
     alt: "Taula de transports MCP i llocs de configuració"
     caption: "Els tres transports (STDIO, HTTP, SSE) i els tres llocs de configuració. STDIO i HTTP són els que fem servir avui."
   - src: "/screenshots/bloc-3-03.png"
+    alt: "Taller 1 — MCP de GitHub Personal i MCP de Github 3Cat"
+    caption: "Taller 1: consumir els dos MCPs de GitHub. Atenció a la distinció entre compte personal i compte Enterprise."
+  - src: "/screenshots/bloc-3-04.png"
     alt: "Taller 2 — repos starter 3cat-tvmaze-mcp i 3cat-wikipedia-mcp"
-    caption: "Els dos repos starter: tool feta (verd) vs tool a completar (vermell)."
+    caption: "Els dos repos starter: tool feta (verd) vs tool a completar (vermell). TVMaze pot retornar 429 amb 30 persones simultànies."
 artifact:
   - "MCP server `3cat-tvmaze-mcp` completat: `search_show()` + `get_episodes()` funcionals"
   - "MCP server `3cat-wikipedia-mcp` completat: `search_article()` + `get_article_summary()` funcionals"
@@ -154,9 +161,9 @@ Un protocol estàndard perquè qualsevol model parli amb qualsevol sistema, sens
 
 Les Skills del Bloc 2 i MCP funcionen exactament amb el mateix patró: definir un nom, una descripció i un handler. No és un mecanisme nou — és el mateix concepte aplicat a eines externes.
 
-## Fetch vs MCP propi — el contrast clau
+## Contingut generalista vs MCP propi — el contrast clau
 
-**MCP de Fetch** llegeix HTML d'una URL pública. Text desestructurat, sense control del format, genèric. Útil per explorar contingut públic ràpidament.
+**Contingut generalista de Copilot** llegeix HTML d'una URL pública. Text desestructurat, sense control del format, genèric. Útil per explorar contingut públic ràpidament.
 
 **MCP server propi** retorna JSON estructurat (títol, gènere, episodis, dates). Copilot rep dades precises. Control total, autenticació i lògica de negoci integrades. Quan necessites estructura, autenticació o reutilització.
 
