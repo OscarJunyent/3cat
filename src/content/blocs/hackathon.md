@@ -42,7 +42,7 @@ artifact:
   - "Documentació completa (README, arquitectura)"
   - "Presentació de 10 min per equip"
   - "Retro: Lessons learned"
-pdfFile: "hackathon-rubrica.pdf"
+pdfFile: "hackathon-exercici-practic.pdf"
 prevBlock: { id: "bloc-b", title: "Design System com a Skills d'IA" }
 nextBlock: null
 ---

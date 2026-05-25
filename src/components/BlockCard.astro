@@ -11,7 +11,7 @@ interface Props {
 
 const { id, number, title, duration, audience, summary, href } = Astro.props;
 const isHackathon = id === 'hackathon';
-const isDisabled = ['bloc-b', 'hackathon'].includes(id);
+const isDisabled = false;
 const badgeNumber = isHackathon ? 'H' : number;
 ---
 
