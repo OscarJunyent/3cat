@@ -34,7 +34,7 @@ const blocsCollection = defineCollection({
         alt: z.string(),
         caption: z.string().optional(),
       })
-    ),
+    ).optional(),
     artifact: z.array(z.string()),
     pdfFile: z.string(),
     prevBlock: z.object({ id: z.string(), title: z.string() }).nullable().optional(),
