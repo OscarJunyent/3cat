@@ -36,6 +36,13 @@ const blocsCollection = defineCollection({
       })
     ).optional(),
     artifact: z.array(z.string()),
+    resources: z.array(
+      z.object({
+        label: z.string(),
+        href: z.string(),
+        description: z.string().optional(),
+      })
+    ).optional(),
     pdfFile: z.string(),
     prevBlock: z.object({ id: z.string(), title: z.string() }).nullable().optional(),
     nextBlock: z.object({ id: z.string(), title: z.string() }).nullable().optional(),

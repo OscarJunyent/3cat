@@ -77,6 +77,10 @@ artifact:
   - "Graella de programació EPG setmanal amb codis de colors per tipus"
   - "7-10 User Stories format Jira amb criteris d'acceptació Gherkin"
   - "Comprensió del cicle complet: prompt → prototip → validació → Jira → dev"
+resources:
+  - label: "Knowledge de Lovable — Design System 3Cat"
+    href: "/resources/3cat-knowledge-lovable.md"
+    description: "Enganxa aquest fitxer a Project Settings → Knowledge del teu projecte Lovable"
 pdfFile: "bloc-a-creacio-interficies-ia.pdf"
 prevBlock:
   id: "bloc-4"
